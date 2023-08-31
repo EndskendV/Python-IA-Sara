@@ -1,0 +1,2 @@
+spotify,C:\Users\jdiaz\AppData\Roaming\Spotify\Spotify.exe
+OperaGX,"C:\Users\jdiaz\AppData\Local\Programs\Opera GX\launcher.exe"
