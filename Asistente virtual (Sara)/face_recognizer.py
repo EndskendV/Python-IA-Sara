@@ -3,6 +3,7 @@ import os
 import threading as tr
 import subprocess as sub
 import winsound
+###Mismo caso cambiar variables a rutas relativas.!!!!
 
 data_path = 'C:\\Users\\jdiaz\\Documents\\Codigos de programacion\\Python IA Sara\\Data_Face'
 image_paths = os.listdir(data_path)

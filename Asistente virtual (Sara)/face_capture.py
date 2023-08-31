@@ -1,7 +1,7 @@
 import cv2
 import os
 import imutils
-
+###Actualizacion futura, Multi Usuario Person and datapaht cambiar a variables.
 person = 'Jesus'
 data_path = 'Data_Face'
 person_path = data_path + '/' + person

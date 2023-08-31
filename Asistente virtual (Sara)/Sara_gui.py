@@ -1,6 +1,6 @@
                                         # Asistente virtual completo
 
-# Importación de librerías...
+ #Importación de librerías...
 
 import speech_recognition as sr
 import subprocess as sub
