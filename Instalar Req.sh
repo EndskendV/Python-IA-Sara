@@ -7,3 +7,5 @@ sudo apt-get -y install python3-pip
 cd "Asistente virtual (Sara)/"
 
 python3 -m pip install -r "requeriments.txt"
+
+python3 -m pip install --upgrade pyc_wheel

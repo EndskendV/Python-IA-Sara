@@ -1,16 +1,3 @@
-pyttsx3
-pywhatkit
-wikipedia
-keyboard
-pygame
-selenium
-imutils
-numpy
-browser
-chatterbot
-face_recognizer
-pyautogui
-
 #Instalar manualmente...
 #whatsapp
 #winsound
