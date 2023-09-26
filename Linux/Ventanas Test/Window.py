@@ -1,27 +1,48 @@
-import tkinter as tk
+import tkinter as tt
 import asyncio
 import threading
-int n=0
-async def async_task():
-    # Your asynchronous task goes here
-    n+=1
-    print(n)
-    await asyncio.sleep(2)  # Simulated async task
 
-def main_window():
-    root = tk.Tk()
-    # Your GUI creation code goes here
+def counter(c):
+    return c+1
+
+
+def calculate(*args):
+    try:
+        value = float(feet.get())
+        meters.set(int(0.3048 * value * 10000.0 + 0.5)/10000.0)
+    except ValueError:
+        pass
+
+root = Tk()
+root.title("Feet to Meters")
+
+mainframe = ttk.Frame(root, padding="3 3 12 12")
+mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
+
+feet = StringVar()
+feet_entry = ttk.Entry(mainframe, width=7, textvariable=feet)
+feet_entry.grid(column=2, row=1, sticky=(W, E))
+
+meters = StringVar()
+ttk.Label(mainframe, textvariable=meters).grid(column=2, row=2, sticky=(W, E))
+
+ttk.Button(mainframe, text="Calculate", command=calculate).grid(column=3, row=3, sticky=W)
+
+ttk.Label(mainframe, text="feet").grid(column=3, row=1, sticky=W)
+ttk.Label(mainframe, text="is equivalent to").grid(column=1, row=2, sticky=E)
+ttk.Label(mainframe, text="meters").grid(column=3, row=2, sticky=W)
+
+for child in mainframe.winfo_children(): 
+    child.grid_configure(padx=5, pady=5)
+
+feet_entry.focus()
+root.bind("<Return>", calculate)
+
+root.mainloop()
+
     
-    def start_async_task():
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        loop.run_until_complete(async_task())
-
-    # Start the asynchronous task in a separate thread
-    async_thread = threading.Thread(target=start_async_task)
-    async_thread.start()
-
-    root.mainloop()
 
 if __name__ == "__main__":
     import time
