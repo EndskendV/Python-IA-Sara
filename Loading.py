@@ -15,7 +15,7 @@ def update(ind):
     if ind == framesNum:
         ind = 0
     label.configure(image=frame)
-    root.after(50, update, ind) # Numero que regula la velocidad del gif
+    root.after(20, update, ind) # Numero que regula la velocidad del gif
 
 label = Label(root)
 label.pack()
