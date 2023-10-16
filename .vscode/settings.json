@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./Winndows/opencv-master/modules/python/package"
+    ]
+}

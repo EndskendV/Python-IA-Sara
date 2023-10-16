@@ -60,15 +60,17 @@ def run_ZAM():
         elif 'alarma' in rec:
             num = rec.replace('alarma', '')
             num = num.strip()
-            talk("Alarma activada a las " + num + " horas.")
+            talk("Alarma activada a las " + num + " horas.")   
+            print(num)         
             while True:
                 if datetime.datetime.now().strftime('%H:%M') == num:
                     print("DESPIERTA!!!")
-                    mixer.init()
-                    mixer.music.load()
-                    mixer.music.play()
-                    if keyboard.read_key() == "s":
-                        mixer.music.stop()
+                    pygame.mixer.init()
+                    pygame.mixer.music.load("SuperMarioBros.mp3")
+                    pygame.mixer.music.play()
+                    detener = input("s")
+                    if detener == "s":
+                        pygame.mixer.music.stop()
                         break
 
 
