@@ -1,19 +1,53 @@
-# Importacion de librerias necesarias para la utilizacion del asistente virtual
-import speech_recognition as sr # Toma todo lo que decimos por microfono y lo transforma en texto.
-import pyttsx3, pywhatkit # pyttsxx3 - Nos ayuda a que python permita hablar con el usuario. //////// # pywhatkit - Lo que hara es que nos permitira abrir una aplicacion, un ejemplo YouTube.
-import wikipedia, pygame # Wikipedia - conecta nuestra aplicacion a la pagina wikipedia. ///////// # pygame - Generalmente se utiliza para crear videojuegos.
-import keyboard, datetime # keyboard - Nos ayuda a que cuando nosotros cuando utilizamos el teclado, la aplicacion lo podra manipular, por asi decirlo.
-from pygame import mixer # 
+import speech_recognition as sr
+import pyttsx3
+import time
+import os
 
-# Declaracion de variables...
-name = "ZAM" # Nombre del asistente virtual.
-listener = sr.Recognizer() # iniciala una variable para que escuche la maquina.
-engine = pyttsx3.init()
+# Función set_alarm
+def set_alarm(hour, minute):
+    while True:
+        current_time = time.localtime()
+        if current_time.tm_hour == hour and current_time.tm_min == minute:
+            print("¡Es hora de despertar!")
+            play_alarm_sound()
+            break
+        time.sleep(60)  # Esperar 1 minuto antes de verificar de nuevo
 
-# Esto nos permite escoger la voz la que utilizara el  asistente virtual...
-voices = engine.getProperty('voices') 
-engine.setProperty('voice', voices[21].id) # Escogimos como voz Spanish Latin, escoger el idioma.
-engine.setProperty('lang', 'es')
+# Función play_alarm_sound
+def play_alarm_sound():
+    # Cambia la ruta al archivo de sonido que desees reproducir
+    sound_file = "SuperMarioBros.mp3"
+    if os.path.exists(sound_file):
+        os.system(f"aplay {sound_file}")
+    else:
+        print("Archivo de sonido no encontrado.")
 
-for i in voices:
-    print (i)
+# Función talk para que el asistente hable
+def talk(text):
+    engine = pyttsx3.init()
+    engine.say(text)
+    engine.runAndWait()
+
+if __name__ == "__main__":
+    print("Programa de despertador")
+
+    recognizer = sr.Recognizer()
+
+    with sr.Microphone() as source:
+        print("Háblame para configurar la alarma...")
+        recognizer.adjust_for_ambient_noise(source)
+        audio = recognizer.listen(source)
+
+    try:
+        alarm_time = recognizer.recognize_google(audio, language="es")
+        print("Hora de la alarma configurada a:", alarm_time)
+        talk("Hora de la alarma configurada a:" + alarm_time)
+
+        alarm_time_parts = alarm_time.split(":")
+        alarm_hour = int(alarm_time_parts[0])
+        alarm_minute = int(alarm_time_parts[1])
+
+        set_alarm(alarm_hour, alarm_minute)
+
+    except sr.UnknownValueError:
+        print("No se escuchó una hora válida.")

@@ -2,9 +2,11 @@
 
 import speech_recognition as sr # Toma todo lo que decimos por microfono y lo transforma en texto.
 import pyttsx3, pywhatkit # pyttsxx3 - Nos ayuda a que python permita hablar con el usuario. //////// # pywhatkit - Lo que hara es que nos permitira abrir una aplicacion, un ejemplo YouTube.
-import wikipedia, pygame # Wikipedia - conecta nuestra aplicacion a la pagina wikipedia. ///////// # pygame - Generalmente se utiliza para crear videojuegos.
+import wikipedia, colors # Wikipedia - conecta nuestra aplicacion a la pagina wikipedia. ///////// # pygame - Generalmente se utiliza para crear videojuegos.
 import keyboard, datetime # keyboard - Nos ayuda a que cuando nosotros cuando utilizamos el teclado, la aplicacion lo podra manipular, por asi decirlo.
 from pygame import mixer # Maneja el sonido.
+import time, os
+import subprocess as sub
 
 # ...Importacion de librerias necesarias para la utilizacion del asistente virtual.
 
@@ -18,6 +20,24 @@ voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[21].id) # Escogimos como voz Spanish Latin, (escoger el idioma).
 engine.setProperty('lang', 'es')
 # ... Esto nos permitira escoger la voz que utilizara el asistente virtual.
+
+# Diccionario, estructura de datos una clave y un valor...
+
+sites = {
+                'google' : 'google.com', # Visitar google.
+                'youtube' : 'https://www.youtube.com/',
+                'wikipedia' : 'https://es.wikipedia.org/wiki/Wikipedia:Portada',
+                'mortales' : 'https://www.youtube.com/@kdevs1488',
+                'classroom' : 'https://classroom.google.com/'
+}
+
+files = {
+                'constancia': 'constancia.pdf',
+                'imagen': 'kakashi.jpg',
+                'leer': 'logicaProgramacion.pdf'
+}
+
+# ...Diccionario, estructura de datos una clave y un valor.
 
 # ...Declaracion de variables.
 
@@ -45,6 +65,14 @@ def listen():
 
     return rec # Retorna todo lo que dijimos en microfono.
 
+def write(f):
+    talk("¿Qué quieres que escriba?")
+    rec_write = listen()
+    f.write(rec_write + os.linesep)
+    f.close()
+    talk("Listo, puede revisarlo")
+    sub.run(["xdg-open", "nota.txt"])
+
 # Todo un proceso para reproducir en YouTube...
 def run_ZAM():
     while True:
@@ -54,27 +82,65 @@ def run_ZAM():
             print("Reproduciendo: " + music)
             talk("Reproduciendo: " + music)
             pywhatkit.playonyt(music) # Reproduce musica y/o video desde YouTube, gracias a pywhatkit.
+
+# ...Todo un proceso para reproducir en YouTube.
+
         elif 'busca' in rec: # Vamos a decir que busque "tal cosa" a base del motor de busqueda de Wikipedia. 
             search = rec.replace('busca: ', '')
             wikipedia.set_lang("es") # Lo que busque Wikipedia, nos mostrara la informacion en espanol.
             wiki = wikipedia.summary(search, 1) # Resumir la informacion, el "1" es la cantidad de oraciones que utilizara.
             print(search + ": " + wiki)
             talk(wiki) # Nos dira la informacion obtenida.
+        
         elif 'alarma' in rec: # Vamos a definir un despertador, la palabra alarma es la clave para que funcione un accion del asistente virtual.
-            num = rec.replace('alarma', '')
-            num = num.strip() # Este metodo corta el string vacio de la instruccion de arriba, sin esto la hora va a tener un espacio de mas, esto genera un error.
-            talk("Alarma activada a las " + num + " horas.")
-            while True: #Se repita la alarma hasta que lo cerremos.
-                if datetime.datetime.now().strftime('%H:%M') == num: # El "H" es para hora y "M" es para minutos.
-                    print("DESPIERTA!!!")
-                    mixer.init()
-                    mixer.music.load("SuperMarioBros.mp3") # Sonido de alarma.
-                    mixer.music.play()
-                    if keyboard.is_pressed() == "s": # Tecla parar la alarma.
-                        mixer.music.stop()
-                        break
+            num = rec.replace('alarma', '').strip()
+            alarm_time = datetime.datetime.now().strftime(num, '%H:%M')
+    
+            current_time = datetime.now()
+            time_difference = alarm_time - current_time
+            # Convierte la diferencia de tiempo en segundos
+            seconds_until_alarm = time_difference.total_seconds()
+            
+            if seconds_until_alarm <= 0:
+                talk("La hora de la alarma ha pasado.")
+            else:
+                talk(f"Alarma activada a las {num} horas.")
+                time.sleep(seconds_until_alarm)  # Espera hasta que sea hora de la alarma
 
-# ...Todo un proceso para reproducir en YouTube.
+                print("¡Es hora de despertar!")
+                mixer.init()
+                mixer.music.load("SuperMarioBros.mp3")
+                mixer.music.play()
+
+                if keyboard.read_key() == "s":
+                    mixer.music.stop()
+        
+        elif 'colores' in rec:
+            talk("Enseguida...")
+            colors.capture()
+
+        elif 'abre' in rec:
+            for site in sites:
+                if site in rec:
+                    sub.call(f'google-chrome {sites[site]}', shell=True)
+                    talk(f'Abriendo {site}')
+        
+        elif 'archivo' in rec:
+            for file in files:
+                if file in rec:
+                    file_path = files[file]
+                    sub.run(["xdg-open", file_path])
+                    talk(f'Abriendo {file}')
+        
+        elif 'escribe' in rec:
+            try:
+                with open("nota.txt", 'a') as f:
+                    write(f)
+            
+            except FileNotFoundError as e:
+                file = open("nota.txt", 'w')
+                write(file)
+    
 
 # ...Crear funciones.
 
