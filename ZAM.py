@@ -4,11 +4,16 @@ import pyttsx3, pywhatkit # pyttsxx3 - Nos ayuda a que python permita hablar con
 import wikipedia, pygame # Wikipedia - conecta nuestra aplicacion a la pagina wikipedia. ///////// # pygame - Generalmente se utiliza para crear videojuegos.
 import keyboard, datetime # keyboard - Nos ayuda a que cuando nosotros cuando utilizamos el teclado, la aplicacion lo podra manipular, por asi decirlo.
 from pygame import mixer
+import time
 
 # Declaracion de variables...
 name = "ZAM" # Nombre del asistente virtual.
 listener = sr.Recognizer() # iniciala una variable para que escuche la maquina.
 engine = pyttsx3.init()
+
+####Que tal si separamos el codigo POR PARTES!!!!
+####Por ejemplo pyttsx3 Y las configuraciones del mismo colocarlo aparte, y posteriormente hacer un
+#### .Configure para el usuario customize, si hay error use un Default.
 
 # Esto nos permite escoger la voz la que utilizara el  asistente virtual...
 voices = engine.getProperty('voices') 
@@ -46,6 +51,13 @@ def listen():
 def run_ZAM():
     while True:
         rec = listen()
+
+        ##Codigo para Colocar lo que esta entendiendo el LISTEN
+        ##
+        ##
+        print(rec)
+        time.sleep(1000)
+
         if 'reproduce' in rec: 
             music = rec.replace('reproduce', '')
             print("Reproduciendo: " + music)
