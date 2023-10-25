@@ -106,3 +106,4 @@ xkit
 xlrd
 youtube-dl
 zipp
+opencv-python
