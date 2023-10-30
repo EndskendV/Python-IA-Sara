@@ -6,9 +6,53 @@ import wikipedia, colors # Wikipedia - conecta nuestra aplicacion a la pagina wi
 import keyboard, datetime # keyboard - Nos ayuda a que cuando nosotros cuando utilizamos el teclado, la aplicacion lo podra manipular, por asi decirlo.
 from pygame import mixer # Maneja el sonido. ///////// # pygame - Generalmente se utiliza para crear videojuegos.
 import time, os # os - nos ayuda en manejar archivos en dentro de python.
-import subprocess as sub # SubProcess - este nos ayuda pueda llamar otros procesos o a otros programas de nuestra computadora y que los pueda ejecutar.
+import subprocess as sub # SubProcess - Este nos ayuda pueda llamar otros procesos o a otros programas de nuestra computadora y que los pueda ejecutar.
+import threading as tr # threading - Nos ayuda en crear aplicaciones que puedan realizar múltiples tareas en paralelo. Los hilos son una forma de lograr concurrencia en Python.
+from tkinter import * # tkinter - Nos servira para crear interfaces gráficas de usuario de manera sencilla.
+from PIL import Image, ImageTk # PIL - Nos ayuda a utilizar imagenes dentro de python, manipulación.
 
 # ...Importacion de librerias necesarias para la utilizacion del asistente virtual.
+
+# Creación de ventana principal...
+
+main_window = Tk()
+main_window.title("ZAM - Asistente virtual") # Titulo de la ventana.
+ 
+main_window.geometry("1850x950") # Tamaño de la ventana.
+main_window.resizable(0, 0) # No se pueda agrandar
+main_window.configure(bg = '#0d090f') # Fondo de la ventana.
+
+# ,,,Creación de ventana principal.
+
+Label_title = Label(main_window, text = "ZAM - Asistente Virtual", bg = '#0d090f', fg = '#E3C6CE',
+                    font = ('URW Bookman', 15, 'bold')) # Titulo de la aplicación. Este tendra: texto, color del fondo, color de letra y tipo de letra.
+Label_title.pack(pady = 30)
+
+# GIF...
+
+Zam_gif_path = "/home/jesusdiaz/Escritorio/Clon/Python-IA-Sara/Resourses/Loading.gif" # Ubicacion de la imagen GIF.
+info_gif = Image.open(Zam_gif_path)
+gif_nframes = info_gif.n_frames # 73 = numero de frames del GIF
+
+Zam_gif_list = [PhotoImage(file = Zam_gif_path, format = f'gif -index {i}') for i in range(gif_nframes)] # Contiene informacion de las 73 imagenes que conforma el GIF.
+label_gif = Label(main_window, bd=0, highlightbackground='white') # Configuracion de fondo y contorno del GIF.
+label_gif.pack() # Posicionar nuestro GIF debajo de la interfaz.
+
+# Animar GIF...
+
+def animate_gif(index):
+    frame = Zam_gif_list[index] # Acceder cada uno de los elementos a traves del indice, cada uno son informacion de los cuadros o imagenes que compone el GIF.
+    index += 1 # Aumentar en 1 el indice.
+    if index == gif_nframes:
+        index = 0 # Reiniciar el ciclo de las imagenes
+    label_gif.configure(image = frame)
+    main_window.after(25, animate_gif, index)
+ 
+animate_gif(0) 
+
+# ...Animar GIF.
+
+# ... GIF.
 
 # Declaracion de variables...
 name = "ZAM" # Nombre del asistente virtual.
@@ -32,13 +76,13 @@ sites = {
 }
 
 files = {
-                'constancia': 'constancia.pdf',
+                'constancia': 'constancia.pdf', # Abrir cualquier tipo de archivo.
                 'imagen': 'kakashi.jpg',
                 'leer': 'logicaProgramacion.pdf'
 }
 
 programs = {
-    'navegador': '/usr/bin/google-chrome',
+    'navegador': '/usr/bin/google-chrome', # Abrir programa.
     'firefox': '/usr/bin/firefox',
     'calculadora': '/usr/bin/gnome-calculator'
 }
@@ -156,6 +200,7 @@ def run_ZAM():
 # ...Crear funciones.
 
 # Entrada principal del programa...
-if __name__ == '__main__':
-    run_ZAM()
+
+main_window,mainloop()
+
 # ...Entrada principal del programa.
