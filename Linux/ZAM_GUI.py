@@ -9,7 +9,7 @@ import time, os # os - nos ayuda en manejar archivos en dentro de python.
 import subprocess as sub # SubProcess - Este nos ayuda pueda llamar otros procesos o a otros programas de nuestra computadora y que los pueda ejecutar.
 import threading as tr # threading - Nos ayuda en crear aplicaciones que puedan realizar múltiples tareas en paralelo. Los hilos son una forma de lograr concurrencia en Python.
 from tkinter import * # tkinter - Nos servira para crear interfaces gráficas de usuario de manera sencilla.
-from PIL import Image, ImageTk # PIL - Nos ayuda a utilizar imagenes dentro de python, manipulación.
+from PIL import Image # PIL - Nos ayuda a utilizar imagenes dentro de python, manipulación.
 
 # ...Importacion de librerias necesarias para la utilizacion del asistente virtual.
 
@@ -18,7 +18,7 @@ from PIL import Image, ImageTk # PIL - Nos ayuda a utilizar imagenes dentro de p
 main_window = Tk()
 main_window.title("ZAM - Asistente virtual") # Titulo de la ventana.
  
-main_window.geometry("1850x950") # Tamaño de la ventana.
+main_window.geometry("550x950") # Tamaño de la ventana.
 main_window.resizable(0, 0) # No se pueda agrandar
 main_window.configure(bg = '#0d090f') # Fondo de la ventana.
 
