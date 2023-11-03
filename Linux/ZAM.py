@@ -17,7 +17,7 @@ engine = pyttsx3.init()
 
 # Esto nos permite escoger la voz la que utilizara el  asistente virtual...
 voices = engine.getProperty('voices') 
-engine.setProperty('voice', voices[21].id) # Escogimos como voz Spanish Latin, (escoger el idioma).
+engine.setProperty('voice', voices[6].id) # Escogimos como voz Spanish Latin, (escoger el idioma).
 engine.setProperty('lang', 'es')
 # ... Esto nos permitira escoger la voz que utilizara el asistente virtual.
 

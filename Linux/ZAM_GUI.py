@@ -62,7 +62,8 @@ engine = pyttsx3.init()
 # Esto nos permite escoger la voz la que utilizara el  asistente virtual...
 voices = engine.getProperty('voices') 
 engine.setProperty('voice', voices[21].id) # Escogimos como voz Spanish Latin, (escoger el idioma).
-engine.setProperty('lang', 'es')
+#engine.setProperty('lang', 'es')
+engine.setProperty('rate', 145)
 # ... Esto nos permitira escoger la voz que utilizara el asistente virtual.
 
 # Diccionario, estructura de datos una clave y un valor...
@@ -100,7 +101,7 @@ def talk(text):
 def listen():
     listener = sr.Recognizer()
     with sr.Microphone() as source: # Toma como fuente el microfono para escuchar.
-        print("Escuchando...")
+        talk("Bienvenido, te escuchó...")
         listener.adjust_for_ambient_noise(source)
         pc = listener.listen(source)
 
@@ -109,9 +110,7 @@ def listen():
         rec = listener.recognize_google(pc, language = "es") # Aseguramos que fue capturado la voz y lo transforma en texto.
         rec = rec.lower() # Metodo que transforma las palabras en minusculas, para minimizar problemas.
     except sr.UnknownValueError:
-        print("No entendi, intenta de nuevo...")
-        if name in rec:
-            rec = rec.replace(name, '')
+        pass
     # Comprueba que si va bien el programa...
 
     return rec # Retorna todo lo que dijimos en microfono.
@@ -195,9 +194,39 @@ def run_ZAM():
             except FileNotFoundError as e:
                 file = open("nota.txt", 'w')
                 write(file)
-    
+
+def mexican_voice():
+    change_voice(22)
+
+def spanish_voice():
+    change_voice(21)
+
+def usa_voice():
+    change_voice(18)
+
+def change_voice(id):
+    engine.setProperty('voice', voices[id].id)
+    engine.setProperty('rate', 145)
+    talk("Bienvenido, soy ZAM. Listo para trabajar.")
 
 # ...Crear funciones.
+
+button_voice_mx = Button(main_window, text = "México", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
+                         command = mexican_voice)
+button_voice_mx.place(x = 45, y = 850)
+
+button_voice_es = Button(main_window, text = "España", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
+                          command = spanish_voice)
+button_voice_es.place(x = 215, y = 850)
+
+button_voice_usa = Button(main_window, text = "English", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
+                          command = usa_voice)
+button_voice_usa.place(x = 385, y = 850)
+
+button_start = Button(main_window, text = "INICIAR", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce", width = 20,
+                          command = run_ZAM)
+button_start.pack(pady = 20)
+
 
 # Entrada principal del programa...
 
