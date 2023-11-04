@@ -61,7 +61,7 @@ engine = pyttsx3.init()
 
 # Esto nos permite escoger la voz la que utilizara el  asistente virtual...
 voices = engine.getProperty('voices') 
-engine.setProperty('voice', voices[21].id) # Escogimos como voz Spanish Latin, (escoger el idioma).
+engine.setProperty('voice', voices[22].id) # Escogimos como voz Spanish Latin, (escoger el idioma).
 #engine.setProperty('lang', 'es')
 engine.setProperty('rate', 145)
 # ... Esto nos permitira escoger la voz que utilizara el asistente virtual.
@@ -69,7 +69,7 @@ engine.setProperty('rate', 145)
 # Diccionario, estructura de datos una clave y un valor...
 
 sites = {
-                'google' : 'google.com', # Visitar google.
+                'google' : 'https://www.google.com', # Visitar google.
                 'youtube' : 'https://www.youtube.com/',
                 'wikipedia' : 'https://es.wikipedia.org/wiki/Wikipedia:Portada',
                 'mortales' : 'https://www.youtube.com/@kdevs1488',
@@ -115,6 +115,8 @@ def listen():
 
     return rec # Retorna todo lo que dijimos en microfono.
 
+# Esto sirve para escribir blocs de notas...
+
 def write(f):
     talk("¿Qué quieres que escriba?")
     rec_write = listen()
@@ -123,7 +125,10 @@ def write(f):
     talk("Listo, puede revisarlo")
     sub.run(["xdg-open", "nota.txt"])
 
+# ...Esto sirve para escribir blocs de notas.
+
 # Todo un proceso para reproducir en YouTube...
+
 def run_ZAM():
     while True:
         rec = listen()
@@ -195,6 +200,8 @@ def run_ZAM():
                 file = open("nota.txt", 'w')
                 write(file)
 
+# Instruccion que sirve para escoger que idioma va mostrar como ejemplo...
+
 def mexican_voice():
     change_voice(22)
 
@@ -204,27 +211,29 @@ def spanish_voice():
 def usa_voice():
     change_voice(18)
 
-def change_voice(id):
+def change_voice(id): # Va a mostrar que voz fue elegido como muestra.
     engine.setProperty('voice', voices[id].id)
     engine.setProperty('rate', 145)
     talk("Bienvenido, soy ZAM. Listo para trabajar.")
 
+# ...Instruccion que sirve para escoger que idioma va mostrar como ejemplo.
+
 # ...Crear funciones.
 
 button_voice_mx = Button(main_window, text = "México", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
-                         command = mexican_voice)
+                         command = mexican_voice) # Funcion que sirve para crear un boton para mostrar voz en idioma Español(Mexico).
 button_voice_mx.place(x = 45, y = 850)
 
 button_voice_es = Button(main_window, text = "España", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
-                          command = spanish_voice)
-button_voice_es.place(x = 215, y = 850)
+                          command = spanish_voice) # Funcion que sirve para crear un boton para mostrar voz en idioma Español(España).
+button_voice_es.place(x = 215, y = 850) 
 
 button_voice_usa = Button(main_window, text = "English", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
-                          command = usa_voice)
+                          command = usa_voice) # Funcion que sirve para crear un boton para mostrar voz en idioma Ingles(USA).
 button_voice_usa.place(x = 385, y = 850)
 
 button_start = Button(main_window, text = "INICIAR", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce", width = 20,
-                          command = run_ZAM)
+                          command = run_ZAM) #Funcion principal que sirve para iniciar ZAM.
 button_start.pack(pady = 20)
 
 
