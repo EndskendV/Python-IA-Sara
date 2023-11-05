@@ -24,9 +24,28 @@ main_window.configure(bg = '#0d090f') # Fondo de la ventana.
 
 # ,,,Creación de ventana principal.
 
+# Muestra esto en pantalla de la aplicacion...
+
+comandos = """
+            Comandos que puedes utilizar:
+            >
+            > Reproduce... (Cancion o video).
+            > Busca... (Algun tipo de informacion).
+            > Abre... (Pagina web o aplicacion de escritorio).
+            > Alarma... (Definelo en 24H).
+            > Archivo... (Escoger nombre).
+            > Colores... (Rojo, Azul y Amarillo).
+            > Termina.
+"""
+
+# ...Muestra esto en pantalla de la aplicacion.
+
 Label_title = Label(main_window, text = "ZAM - Asistente Virtual", bg = '#0d090f', fg = '#E3C6CE',
                     font = ('URW Bookman', 15, 'bold')) # Titulo de la aplicación. Este tendra: texto, color del fondo, color de letra y tipo de letra.
 Label_title.pack(pady = 30)
+
+text_info = Text(main_window, bg = "#2E202A", fg = "white", bd = 0, highlightbackground = "#0d090f")
+text_info.place(x = 50, y = 700, height = 50, width = 450)
 
 # GIF...
 
@@ -35,7 +54,7 @@ info_gif = Image.open(Zam_gif_path)
 gif_nframes = info_gif.n_frames # 73 = numero de frames del GIF
 
 Zam_gif_list = [PhotoImage(file = Zam_gif_path, format = f'gif -index {i}') for i in range(gif_nframes)] # Contiene informacion de las 73 imagenes que conforma el GIF.
-label_gif = Label(main_window, bd=0, highlightbackground='white') # Configuracion de fondo y contorno del GIF.
+label_gif = Label(main_window, bd = 0, highlightbackground='#0d090f') # Configuracion de fondo y contorno del GIF.
 label_gif.pack() # Posicionar nuestro GIF debajo de la interfaz.
 
 # Animar GIF...
@@ -51,6 +70,26 @@ def animate_gif(index):
 animate_gif(0) 
 
 # ...Animar GIF.
+
+# Nueva ventana para instrucciones...
+
+def ventana_instrucciones():
+    ventana_Instrucciones = Toplevel(main_window)
+    ventana_Instrucciones.title("Comandos_ZAM")
+
+    ventana_Instrucciones.geometry("350x550") # Tamaño de la ventana.
+    ventana_Instrucciones.resizable(0, 0) # No se pueda agrandar
+    ventana_Instrucciones.configure(bg = '#0d090f') # Fondo de la ventana.canvas
+
+    if ventana_Instrucciones.title() == "Instrucciones":
+        pass
+    else:
+        canvas_comandos = Canvas(ventana_Instrucciones, bg="black", height=450, width=450)
+        canvas_comandos.pack()
+        canvas_comandos.create_text(150, 90, text=comandos, fill="white", font='Arial 11')
+
+# ...Nueva ventana para instrucciones.
+
 
 # ... GIF.
 
@@ -83,11 +122,10 @@ files = {
 }
 
 programs = {
-    'navegador': '/usr/bin/google-chrome', # Abrir programa.
-    'firefox': '/usr/bin/firefox',
-    'calculadora': '/usr/bin/gnome-calculator'
+                'navegador': '/usr/bin/google-chrome', # Abrir programa.
+                'firefox': '/usr/bin/firefox',
+                'calculadora': '/usr/bin/gnome-calculator'
 }
-
 
 # ...Diccionario, estructura de datos una clave y un valor.
 
@@ -97,6 +135,13 @@ programs = {
 def talk(text):
     engine.say(text) # Todo lo que pongamos dentro de este parentesis con el metodo say, lo convertira en voz.
     engine.runAndWait() # Esto hara que funcione la instruccion anterior.
+
+def read_and_talk():
+    text = text_info.get("1.0", "end")
+    talk(text)
+
+def write_text(text_wiki):
+    text_info.insert(INSERT, text_wiki)
 
 def listen():
     listener = sr.Recognizer()
@@ -143,9 +188,10 @@ def run_ZAM():
         elif 'busca' in rec: # Vamos a decir que busque "tal cosa" a base del motor de busqueda de Wikipedia. 
             search = rec.replace('busca: ', '')
             wikipedia.set_lang("es") # Lo que busque Wikipedia, nos mostrara la informacion en espanol.
-            wiki = wikipedia.summary(search, 1) # Resumir la informacion, el "1" es la cantidad de oraciones que utilizara.
-            print(search + ": " + wiki)
+            wiki = wikipedia.summary(search, 1) # Resumir la informacion, el "1" es la cantidad de oraciones que utilizara
             talk(wiki) # Nos dira la informacion obtenida.
+            write_text(search + ": " + wiki)
+            break
         
         elif 'alarma' in rec: # Vamos a definir un despertador, la palabra alarma es la clave para que funcione un accion del asistente virtual.
             num = rec.replace('alarma', '').strip()
@@ -222,20 +268,26 @@ def change_voice(id): # Va a mostrar que voz fue elegido como muestra.
 
 button_voice_mx = Button(main_window, text = "México", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
                          command = mexican_voice) # Funcion que sirve para crear un boton para mostrar voz en idioma Español(Mexico).
-button_voice_mx.place(x = 45, y = 850)
+button_voice_mx.place(x = 45, y = 900)
 
 button_voice_es = Button(main_window, text = "España", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
                           command = spanish_voice) # Funcion que sirve para crear un boton para mostrar voz en idioma Español(España).
-button_voice_es.place(x = 215, y = 850) 
+button_voice_es.place(x = 215, y = 900) 
 
 button_voice_usa = Button(main_window, text = "English", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
                           command = usa_voice) # Funcion que sirve para crear un boton para mostrar voz en idioma Ingles(USA).
-button_voice_usa.place(x = 385, y = 850)
+button_voice_usa.place(x = 385, y = 900)
 
 button_start = Button(main_window, text = "INICIAR", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce", width = 20,
                           command = run_ZAM) #Funcion principal que sirve para iniciar ZAM.
 button_start.pack(pady = 20)
 
+boton_instrucciones = Button(main_window, text="Ver instrucciones de uso", command = ventana_instrucciones, fg = "#e3c6ce",bd = 0, bg = "#0d090f", highlightbackground = "#e3c6ce")
+boton_instrucciones.pack(pady = 1)
+
+button_speak = Button(main_window, text = "HABLA", fg = "#e3c6ce", bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
+                          command = read_and_talk) # Funcion que sirve para leer y hablar lo que puso el usuario en el cuadro de texto.
+button_speak.place(x = 45, y = 800)
 
 # Entrada principal del programa...
 
