@@ -19,18 +19,52 @@ engine.setProperty('voice', voices[21].id) # Escogimos como voz Spanish Latin, e
 # ... Esto nos permitira escoger la voz que utilizara el asistente virtual.
 
 
-words = ['imnesurable cantidad de texto', 'texto']     
+words = ['Sexo', 'en', 'el', 'oxxo', 'sexoooooooo','eeen']     
 engine.say(random.choice(words))
 engine.runAndWait()
-time.sleep(5)
-newVoiceRate = 145
-engine.setProperty('rate',newVoiceRate)
+time.sleep(0.3)
 engine.say(random.choice(words))
 engine.runAndWait()
-print('Voz en 145:')
-time.sleep(5)
-newVoiceRate = 250
-engine.setProperty('rate',newVoiceRate)
+time.sleep(0.3)  
 engine.say(random.choice(words))
-print('Voz en 250:')
 engine.runAndWait()
+time.sleep(0.3)
+engine.say(random.choice(words))
+engine.runAndWait()
+time.sleep(0.3)
+  
+engine.say(random.choice(words))
+engine.runAndWait()
+time.sleep(0.3)
+engine.say(random.choice(words))
+engine.runAndWait()
+time.sleep(0.3)
+  
+engine.say(random.choice(words))
+engine.runAndWait()
+time.sleep(0.3)
+engine.say(random.choice(words))
+engine.runAndWait()
+time.sleep(0.3)
+  
+engine.say(random.choice(words))
+engine.runAndWait()
+time.sleep(0.3)
+engine.say(random.choice(words))
+engine.runAndWait()
+time.sleep(0.3)
+  
+engine.say(random.choice(words))
+engine.runAndWait()
+time.sleep(0.3)
+engine.say(random.choice(words))
+engine.runAndWait()
+time.sleep(0.3)
+  
+engine.say(random.choice(words))
+engine.runAndWait()
+time.sleep(0.3)
+engine.say(random.choice(words))
+engine.runAndWait()
+time.sleep(0.3)
+
