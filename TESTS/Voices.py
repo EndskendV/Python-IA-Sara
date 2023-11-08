@@ -19,7 +19,7 @@ engine.setProperty('voice', voices[21].id) # Escogimos como voz Spanish Latin, e
 # ... Esto nos permitira escoger la voz que utilizara el asistente virtual.
 
 
-words = ['Sexo', 'en', 'el', 'oxxo', 'sexoooooooo','eeen']     
+words = ['NO', 'SI']     
 engine.say(random.choice(words))
 engine.runAndWait()
 time.sleep(0.3)
