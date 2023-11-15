@@ -1,0 +1,3 @@
+Google,/usr/bin/google-chrome
+firefox,/usr/bin/firefox
+calculadora,/usr/bin/gnome-calculator

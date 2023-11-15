@@ -1,0 +1,2 @@
+constancia,/home/jesusdiaz/Escritorio/clon2/Python-IA-Sara/constancia.pdf
+leer,/home/jesusdiaz/Escritorio/clon2/Python-IA-Sara/logicaProgramacion.pdf

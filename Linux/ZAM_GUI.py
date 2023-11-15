@@ -28,10 +28,10 @@ main_window.configure(bg = '#0d090f') # Fondo de la ventana.
 
 comandos = """
             Comandos que puedes utilizar:
-            >
-            > Reproduce... (Cancion o video).
+            
+            > Reproduce... (Canción o video).
             > Busca... (Algun tipo de informacion).
-            > Abre... (Pagina web o aplicacion de escritorio).
+            > Abre... (Página web o aplicación de escritorio).
             > Alarma... (Definelo en 24H).
             > Archivo... (Escoger nombre).
             > Colores... (Rojo, Azul y Amarillo).
@@ -49,7 +49,7 @@ text_info.place(x = 50, y = 700, height = 50, width = 450)
 
 # GIF...
 
-Zam_gif_path = "Resourses/Loading.gif" # Ubicacion de la imagen GIF.
+Zam_gif_path = "/home/jesusdiaz/Escritorio/Clon/Python-IA-Sara/Resourses/Loading.gif" # Ubicacion de la imagen GIF.
 info_gif = Image.open(Zam_gif_path)
 gif_nframes = info_gif.n_frames # 73 = numero de frames del GIF
 
@@ -90,6 +90,63 @@ def ventana_instrucciones():
 
 # ...Nueva ventana para instrucciones.
 
+# Nueva Agregar para instrucciones...
+
+def ventana_agregar(): # Aun no hablar de esto es para despues...
+    ventana_Agregar = Toplevel(main_window)
+    ventana_Agregar.title("Apps/Files/Pages_ZAM")
+
+    ventana_Agregar.geometry("750x300") # Tamaño de la ventana.
+    ventana_Agregar.resizable(0, 0) # No se pueda agrandar
+    ventana_Agregar.configure(bg = '#0d090f') # Fondo de la ventana.canvas
+
+    if ventana_Agregar.title() == "Agregar":
+        pass
+    else:
+
+        Label_title = Label(ventana_Agregar, text = "Agregar", bg = '#0d090f', fg = '#E3C6CE',
+                    font = ('URW Bookman', 15, 'bold'))
+        Label_title.place(x = 120, y = 20)
+
+        Label_title = Label(ventana_Agregar, text = "Agregados", bg = '#0d090f', fg = '#E3C6CE',
+                    font = ('URW Bookman', 15, 'bold'))
+        Label_title.place(x = 520, y = 20)
+        
+        button_add_files = Button(ventana_Agregar, text = "Archivos", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
+                          command = open_files) # Funcion
+        button_add_files.place(x = 105, y = 75)
+
+        button_add_apps = Button(ventana_Agregar, text = "Programas", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
+                          command = open_apps) # Funcion
+        button_add_apps.place(x = 105, y = 130) # 750x300
+
+        button_add_pages = Button(ventana_Agregar, text = "Paginas", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
+                          command = open_pages) # Funcion 
+        button_add_pages.place(x = 105, y = 190)
+
+        button_tell_files = Button(ventana_Agregar, text = "Ver Archivos", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
+                                command = talk_files) # Funcion
+        button_tell_files.place(x = 500, y = 75)
+
+        button_tell_apps = Button(ventana_Agregar, text = "Ver Programas", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
+                                command = talk_apps) # Funcion
+        button_tell_apps.place(x = 500, y = 130)
+
+        button_tell_pages = Button(ventana_Agregar, text = "Ver Páginas", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
+                          command = talk_pages) # Funcion
+        button_tell_pages.place(x = 500, y = 190)
+
+# ...Nueva Agregar para instrucciones.
+# Aun no mostrar, falta implemnentar configuracion...
+def charge_data(name_dict, name_file):
+    try:
+        with open(name_file) as f:
+            for line in f:
+                (key, val) = line.split(",")
+                val = val.rstrip("\n")
+                name_dict[key] = val
+    except FileNotFoundError as e:
+        pass
 
 # ... GIF.
 
@@ -107,25 +164,14 @@ engine.setProperty('rate', 145)
 
 # Diccionario, estructura de datos una clave y un valor...
 
-sites = {
-                'google' : 'https://www.google.com', # Visitar google.
-                'youtube' : 'https://www.youtube.com/',
-                'wikipedia' : 'https://es.wikipedia.org/wiki/Wikipedia:Portada',
-                'mortales' : 'https://www.youtube.com/@kdevs1488',
-                'classroom' : 'https://classroom.google.com/'
-}
+sites = dict()
+charge_data(sites, "pages.txt")
 
-files = {
-                'constancia': 'constancia.pdf', # Abrir cualquier tipo de archivo.
-                'imagen': 'kakashi.jpg',
-                'leer': 'logicaProgramacion.pdf'
-}
+files = dict()
+charge_data(files, "archivos.txt")
 
-programs = {
-                'navegador': '/usr/bin/google-chrome', # Abrir programa.
-                'firefox': '/usr/bin/firefox',
-                'calculadora': '/usr/bin/gnome-calculator'
-}
+programs = dict()
+charge_data(programs, "apps.txt")
 
 # ...Diccionario, estructura de datos una clave y un valor.
 
@@ -142,6 +188,147 @@ def read_and_talk():
 
 def write_text(text_wiki):
     text_info.insert(INSERT, text_wiki)
+
+def open_files():
+    global namefiles, pathf
+    window_files = Toplevel()
+    window_files.title("Agrega archivos")
+    window_files.geometry("750x250")
+    window_files.configure(bg = "#0d090f")
+    window_files.resizable(0, 0)
+    main_window.eval(f'tk::PlaceWindow {str(window_files)} center')
+
+    title_label = Label(window_files, text = "Agregar un archivo", fg = "white", bg = "#0d090f", font = ('URW Bookman', 15, 'bold'))
+    title_label.pack(pady = 3)
+    name_label = Label(window_files, text = "Nombre del archivo", fg = "white", bg = "#0d090f", font = ('URW Bookman', 13, 'bold'))
+    name_label.place(x = 50, y = 50)
+
+    namefiles = Entry(window_files)
+    namefiles.place(x = 55, y = 80)
+
+    path_label = Label(window_files, text = "Ruta del archivo", fg = "white", bg = "#0d090f", font = ('URW Bookman', 13, 'bold'))
+    path_label.place(x = 450, y = 50)
+
+    pathf = Entry(window_files)
+    pathf.place(x = 400, y = 80, width = 300)
+
+    save_button = Button(window_files, text = "Guardar", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
+                          command = add_files)
+    save_button.place(x = 300, y = 150)
+
+def open_apps():
+    global nameapps, patha
+    window_apps = Toplevel()
+    window_apps.title("Agrega aplicación")
+    window_apps.geometry("750x250")
+    window_apps.configure(bg = "#0d090f")
+    window_apps.resizable(0, 0)
+    main_window.eval(f'tk::PlaceWindow {str(window_apps)} center')
+
+    title_label = Label(window_apps, text = "Agregar una aplicación", fg = "white", bg = "#0d090f", font = ('URW Bookman', 15, 'bold'))
+    title_label.pack(pady = 3)
+    name_label = Label(window_apps, text = "Nombre de la aplicación", fg = "white", bg = "#0d090f", font = ('URW Bookman', 13, 'bold'))
+    name_label.place(x = 50, y = 50)
+
+    nameapps = Entry(window_apps)
+    nameapps.place(x = 55, y = 80)
+
+    path_label = Label(window_apps, text = "Ruta de la aplicación", fg = "white", bg = "#0d090f", font = ('URW Bookman', 13, 'bold'))
+    path_label.place(x = 450, y = 50)
+
+    patha = Entry(window_apps)
+    patha.place(x = 400, y = 80, width = 300)
+
+    save_button = Button(window_apps, text = "Guardar", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
+                          command = add_apps)
+    save_button.place(x = 300, y = 150)
+
+def open_pages():
+    global namepages, pathpages
+    window_pages = Toplevel()
+    window_pages.title("Agrega páginas web")
+    window_pages.geometry("750x250")
+    window_pages.configure(bg = "#0d090f")
+    window_pages.resizable(0, 0)
+    main_window.eval(f'tk::PlaceWindow {str(window_pages)} center')
+
+    title_label = Label(window_pages, text = "Agregar un página web", fg = "white", bg = "#0d090f", font = ('URW Bookman', 15, 'bold'))
+    title_label.pack(pady = 3)
+    name_label = Label(window_pages, text = "Nombre de la página web", fg = "white", bg = "#0d090f", font = ('URW Bookman', 13, 'bold'))
+    name_label.place(x = 50, y = 50)
+
+    namepages = Entry(window_pages)
+    namepages.place(x = 55, y = 80)
+
+    path_label = Label(window_pages, text = "URL de la página web", fg = "white", bg = "#0d090f", font = ('URW Bookman', 13, 'bold'))
+    path_label.place(x = 450, y = 50)
+
+    pathpages = Entry(window_pages)
+    pathpages.place(x = 400, y = 80, width = 300)
+
+    save_button = Button(window_pages, text = "Guardar", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
+                          command = add_pages)
+    save_button.place(x = 300, y = 150)
+
+def add_files():
+    name_file = namefiles.get().strip()
+    path_file = pathf.get().strip()
+    
+    files[name_file] = path_file
+
+    save_data(name_file, path_file, "archivos.txt")
+    namefiles.delete(0, "end")
+    pathf.delete(0, "end")
+
+def add_apps():
+    name_file = nameapps.get().strip()
+    path_file = patha.get().strip()
+    
+    save_data(name_file, path_file, "apps.txt")
+    programs[name_file] = path_file
+    nameapps.delete(0, "end")
+    patha.delete(0, "end")
+
+def add_pages():
+    name_page = namepages.get().strip()
+    url_pages = pathpages.get().strip()
+    
+    sites[name_page] = url_pages
+    save_data(name_page, url_pages, "pages.txt")
+    namepages.delete(0, "end")
+    pathpages.delete(0, "end")
+
+def save_data(key, value, file_name):
+    try:
+        with open(file_name, 'a') as f:
+            f.write(key + "," + value + "\n")
+    except FileNotFoundError as f:
+        file = open(file_name, 'a')
+        file.write(key + "," + value + "\n")
+
+def talk_pages():
+    if bool(sites) == True:
+        talk("Has agregado las siguientes páginas web: ")
+        for site in sites:
+            talk(site)
+    else:
+        talk("Aún no has agregado páginas web.")
+
+def talk_apps():
+    if bool(programs) == True:
+        talk("Has agregado las siguientes aplicaciones: ")
+        for program in programs:
+            talk(program)
+    else:
+        talk("Aún no has agregado aplicaciones.")
+
+def talk_files():
+    if bool(files) == True:
+        talk("Has agregado los siguientes archivos: ")
+        for file in files:
+            talk(file)
+    else:
+        talk("Aún no has agregado archivos.")
 
 def listen():
     listener = sr.Recognizer()
@@ -167,12 +354,12 @@ def write(f):
     rec_write = listen()
     f.write(rec_write + os.linesep)
     f.close()
-    talk("Listo, puede revisarlo")
+    talk("Listó, puede revisarlo")
     sub.run(["xdg-open", "nota.txt"])
 
 # ...Esto sirve para escribir blocs de notas.
 
-# Todo un proceso para reproducir en YouTube...
+# Todo un proceso para reproducir en YouTube... 
 
 def run_ZAM():
     while True:
@@ -221,21 +408,31 @@ def run_ZAM():
             colors.capture()
 
         elif 'abre' in rec: # Definimos la palabra abre para poder abrir una pestaña de busqueda.
-            for site in sites:
-                if site in rec:
-                    sub.call(f'google-chrome {sites[site]}', shell=True) # Aqui seleccionamos el programa de busqueda de Google Chrome
-                    talk(f'Abriendo {site}')
-            for app in programs:
-                if app in rec:
-                    talk(f'Abriendo {app}')
-                    sub.Popen(programs[app])
+            task = rec.replace('abre', '').strip()
+
+            if task in sites: 
+                for task in sites:
+                    if task in rec:
+                        sub.call(f'google-chrome {sites[task]}', shell=True) # Aqui seleccionamos el programa de busqueda de Google Chrome
+                        talk(f'Abriendo {task}')
+            elif task in programs:
+                for task in programs:
+                    if task in rec:
+                        talk(f'Abriendo {task}')
+                        sub.Popen(programs[task])
+            else:
+                talk("Lo siento, parece que aun no has agregado esa app o página web.")
         
         elif 'archivo' in rec: # Definimos la palabra archivo, esto nos permite abrir una archivo dentro de nuestro computador. 
-            for file in files:
-                if file in rec:
-                    file_path = files[file]
-                    sub.run(["xdg-open", file_path]) # Esto nos ayudara a ejecutar una instruccion para poder abrir un archivo.
-                    talk(f'Abriendo {file}')
+            file = rec.replace('archivo', '').strip()
+            if file in files:
+                for file in files:
+                    if file in rec:
+                        file_path = files[file]
+                        sub.run(["xdg-open", file_path]) # Esto nos ayudara a ejecutar una instruccion para poder abrir un archivo.
+                        talk(f'Abriendo {file}')
+                    else:
+                        talk("Lo siento, parece que aun no has agregado ese archivo.")
         
         elif 'escribe' in rec: # Decimos: escribe para poder hacer una nota a la cual guarda en nuestro computador.
             try:
@@ -245,6 +442,34 @@ def run_ZAM():
             except FileNotFoundError as e:
                 file = open("nota.txt", 'w')
                 write(file)
+
+def give_me_name():
+    talk("Hola, ¿Cómo te llamas?")
+    name = listen()
+    name = name.strip()
+    talk(f"Bienvenido {name}")
+
+    try:
+        with open("name.txt", 'w') as f:
+            f.write(name)
+    except FileNotFoundError:
+        file = open("name.txt", 'w')
+        file = write(name)
+
+def say_hello():
+    
+        if os.path.exists("name.txt"):
+            with open("name.txt") as f:
+                for name in f:
+                    talk(f"Hola bienvenido {name}")
+        else:
+            give_me_name()
+
+def thread_hello():
+    t = tr.Thread(target=say_hello)
+    t.start()
+
+thread_hello()
 
 # Instruccion que sirve para escoger que idioma va mostrar como ejemplo...
 
@@ -288,6 +513,10 @@ boton_instrucciones.pack(pady = 1)
 button_speak = Button(main_window, text = "HABLA", fg = "#e3c6ce", bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
                           command = read_and_talk) # Funcion que sirve para leer y hablar lo que puso el usuario en el cuadro de texto.
 button_speak.place(x = 45, y = 800)
+
+button_add_files = Button(main_window, text = "AGREGAR", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
+                          command = ventana_agregar) # Funcion que sirve para agregar programas, apps y paginas webs.
+button_add_files.place(x = 385, y = 800)
 
 # Entrada principal del programa...
 
