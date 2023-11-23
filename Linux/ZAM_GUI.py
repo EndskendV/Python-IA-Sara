@@ -49,7 +49,7 @@ text_info.place(x = 50, y = 700, height = 50, width = 450)
 
 # GIF...
 
-Zam_gif_path = "/home/jesusdiaz/Escritorio/Clon/Python-IA-Sara/Resourses/Loading.gif" # Ubicacion de la imagen GIF.
+Zam_gif_path = "../Resourses/Loading.gif" # Ubicacion de la imagen GIF.
 info_gif = Image.open(Zam_gif_path)
 gif_nframes = info_gif.n_frames # 73 = numero de frames del GIF
 
