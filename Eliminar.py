@@ -1,28 +1,25 @@
-from tkinter import *
-from tkinter import ttk 
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
 
-def prueba():
-	print("Hola")
+def check_chromium():
+    # Configura las opciones del navegador
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.binary_location = '/usr/bin/chromium'  # Ruta al binario de Chromium
 
-ventana = Tk()
+    # Crea una instancia del navegador
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=chrome_options)
 
-panel = ttk.Notebook(ventana)
-panel.pack(fill="both",expand="yes")
+    try:
+        # Abre una página de ejemplo
+        driver.get('https://www.google.com')
 
-tab1 = ttk.Frame(panel)
-panel.add(tab1,text="Etiquetas")
+        # Imprime el título de la página para verificar que está funcionando
+        print('Título de la página:', driver.title)
+    finally:
+        # Cierra el navegador al finalizar
+        driver.quit()
 
-tab2 = ttk.Frame(panel)
-panel.add(tab2,text="Botones")
-#Pestaña 1
-etiqueta = Label(tab1,text="Recuerda que las etiquetas es con la clase Label")
-etiqueta.place(x=20,y=20)
-#Pestaña 2
-etiqueta2 = Label(tab2,text="Para botones la clase es Button")
-boton = Button(tab2,text="Prueba",command=prueba)
-etiqueta2.place(x=20,y=20)
-boton.place(x=20,y=50)
-
-ventana.geometry("400x400")
-ventana.title("Pestañas")
-ventana.mainloop()
+check_chromium()
