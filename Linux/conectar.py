@@ -93,8 +93,15 @@ def insert_data(table, data):
 
 # # Ejemplos de uso
 # insert_data('question_answers', {'question': '¿Cuál es tu nombre?', 'answer': 'Juan0'})
-# # O con un String
-insert_data('question_answers', "default,'¿Cuál es tu nombre?', 'Juan222'")
+# # # O con un String
+# insert_data('"pages.txt"', "'Google', 'google.com'")
+# # insert_data('"pages.txt"', "'facebook', 'facebook.com'")
+# insert_data('"pages.txt"', "'Gmail', 'gmail.com'")
+# insert_data('"contacts.txt"', "'Jesús', '+526644714104'")
+# # insert_data('"contacts.txt"', "'Yael', '+52663445465'")
+# insert_data('"archivos.txt"', "'Conexion postgres', '~/Escritorio/clon3/Python-IA-Sara/Linux/conectar.py'")
+# insert_data('"archivos.txt"', "'Super Mario 3 Cancion', '~/Escritorio/clon3/Python-IA-Sara/Linux/SuperMarioBros.mp3'")
+
 
 def get_questions_answers():
     bot_list = []

@@ -77,7 +77,6 @@ def animate_gif(index):
     label_gif.configure(image = frame)
     main_window.after(25, animate_gif, index)
  
-animate_gif(0) 
 
 # ...Animar GIF.
 
@@ -160,16 +159,6 @@ def ventana_agregar(): # Aun no hablar de esto es para despues...
 
 # ...Nueva Agregar para instrucciones.
 
-def charge_data(name_dict, name_file):
-    try:
-        with open(name_file) as f:
-            for line in f:
-                (key, val) = line.split(",")
-                val = val.rstrip("\n")
-                name_dict[key] = val
-    except FileNotFoundError as e:
-        pass
-
 # Declaracion de variables...
 name = "ZAM" # Nombre del asistente virtual.
 listener = sr.Recognizer() # iniciala una variable para que escuche la maquina.
@@ -184,17 +173,31 @@ engine.setProperty('rate', 145)
 
 # Diccionario, estructura de datos una clave y un valor...
 
-sites = dict()
-charge_data(sites, "pages.txt") # Guarda las paginas web como ".txt"
 
-files = dict()
-charge_data(files, "archivos.txt") # Guarda las archivos como ".txt"
 
-programs = dict()
-charge_data(programs, "apps.txt") # Guarda las Apps como ".txt"
+# region TXT LECTURA
+##LECTURA
+def charge_data(name_file):
+    try:
+        valorx = conectar.get_table(f'"{name_file}"')
+        print('Cargando '+name_file)
+        print(dict(valorx))
+        return dict(valorx)
+    except FileNotFoundError as e:
+        print('Paso '+ name_file)
+        pass
 
-contacts = dict()
-charge_data(contacts, "contacts.txt") # Guarda las Contactos como ".txt"
+programs = charge_data("apps.txt") # Guarda las Apps en la base de datos
+
+sites = charge_data("pages.txt") # Guarda las paginas web como ".txt"
+
+files = charge_data("archivos.txt") # Guarda las archivos como ".txt"
+
+contacts = charge_data("contacts.txt") # Guarda las Contactos como ".txt"
+
+# endregion
+
+
 
 # ...Diccionario, estructura de datos una clave y un valor.
 
@@ -337,11 +340,12 @@ def open_contacts():
     save_button = Button(window_contacts, text = "Guardar", fg = "#e3c6ce",bd = 0, bg = "#0d090f", font = ('URW Bookman', 15, 'bold'), highlightbackground = "#e3c6ce",
                           command = add_contacts)
     save_button.place(x = 300, y = 150)
+# region ESCRITURA
 
 def add_files():
     name_file = namefiles.get().strip() # Nombre del archivo.
     path_file = pathf.get().strip() # Ruta del archivo.
-    
+    print(path_file)
     files[name_file] = path_file
 
     save_data(name_file, path_file, "archivos.txt") # Donde se almacenará
@@ -377,12 +381,15 @@ def add_contacts():
 
 def save_data(key, value, file_name):
     try:
-        with open(file_name, 'a') as f:
-            f.write(key + "," + value + "\n")
-    except FileNotFoundError as f:
-        file = open(file_name, 'a')
-        file.write(key + "," + value + "\n")
+        conectar.insert_data(f'"{file_name}"',f"'{key}','{value}'")
+        print('Subido')
 
+    except FileNotFoundError as f:
+        
+## Escritura
+# save_data('Misael','+664801225222',"contacts.txt")
+
+# endregion
 # Muestra que Aplicaciones, Contatos, Paginas web y Archivos agregados...
 
 def talk_pages():
@@ -574,7 +581,6 @@ def thread_hello():
     t = tr.Thread(target=say_hello)
     t.start()
 
-thread_hello()
 
 #def conversar(rec):
  #   chat = ChatBot("ZAM", conectar_uri=None)
@@ -689,8 +695,5 @@ button_add_files = Button(main_window, text = "EXTRA", fg = "#e3c6ce",bd = 0, bg
                           command = ventana_agregar) # Funcion que sirve para agregar programas, apps y paginas webs.
 button_add_files.place(x = 225, y = 690)
 
-# Entrada principal del programa...
-
-main_window,mainloop()
 
 # ...Entrada principal del programa.

@@ -160,15 +160,15 @@ def ventana_agregar(): # Aun no hablar de esto es para despues...
 
 # ...Nueva Agregar para instrucciones.
 
-def charge_data(name_dict, name_file):
-    try:
-        with open(name_file) as f:
-            for line in f:
-                (key, val) = line.split(",")
-                val = val.rstrip("\n")
-                name_dict[key] = val
-    except FileNotFoundError as e:
-        pass
+# def charge_data(name_dict, name_file):
+#     try:
+#         with open(name_file) as f:
+#             for line in f:
+#                 (key, val) = line.split(",")
+#                 val = val.rstrip("\n")
+#                 name_dict[key] = val
+#     except FileNotFoundError as e:
+#         pass
 
 # Declaracion de variables...
 name = "ZAM" # Nombre del asistente virtual.
@@ -183,18 +183,27 @@ engine.setProperty('rate', 145)
 # ... Esto nos permitira escoger la voz que utilizara el asistente virtual.
 
 # Diccionario, estructura de datos una clave y un valor...
+# region TXT LECTURA
+##LECTURA
+def charge_data(name_file):
+    try:
+        valorx = conectar.get_table(f'"{name_file}"')
+        print('Cargando '+name_file)
+        print(dict(valorx))
+        return dict(valorx)
+    except FileNotFoundError as e:
+        print('Paso '+ name_file)
+        pass
 
-sites = dict()
-charge_data(sites, "pages.txt") # Guarda las paginas web como ".txt"
+programs = charge_data("apps.txt") # Guarda las Apps en la base de datos
 
-files = dict()
-charge_data(files, "archivos.txt") # Guarda las archivos como ".txt"
+sites = charge_data("pages.txt") # Guarda las paginas web En La base de datos
 
-programs = dict()
-charge_data(programs, "apps.txt") # Guarda las Apps como ".txt"
+files = charge_data("archivos.txt") # Guarda las archivos En La base de datos
 
-contacts = dict()
-charge_data(contacts, "contacts.txt") # Guarda las Contactos como ".txt"
+contacts = charge_data("contacts.txt") # Guarda las Contactos En La base de datos
+
+# endregion
 
 # ...Diccionario, estructura de datos una clave y un valor.
 
@@ -377,14 +386,22 @@ def add_contacts():
 
 def save_data(key, value, file_name):
     try:
-        with open(file_name, 'a') as f:
-            f.write(key + "," + value + "\n")
+        conectar.insert_data(f'"{file_name}"',f"'{key}','{value}'")
+        print('Subido')
     except FileNotFoundError as f:
-        file = open(file_name, 'a')
-        file.write(key + "," + value + "\n")
+        pass
+        
+## Escritura
+
+# def save_data(key, value, file_name):
+#     try:
+#         with open(file_name, 'a') as f:
+#             f.write(key + "," + value + "\n")
+#     except FileNotFoundError as f:
+#         file = open(file_name, 'a')
+#         file.write(key + "," + value + "\n")
 
 # Muestra que Aplicaciones, Contatos, Paginas web y Archivos agregados...
-
 def talk_pages():
     if bool(sites) == True:
         talk("Has agregado las siguientes páginas web: ")
