@@ -56,4 +56,3 @@ def capture():
                 break
     cap.release()
     cv2.destroyAllWindows()
-capture()
